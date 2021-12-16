@@ -1,6 +1,8 @@
-# Federated Learning Simulation Framework (fl&#8209;simulation).
+# Federated Learning Simulation Framework (fl-simulation)
 
 A flexible framework for running experiments with PyTorch models in a simulated Federated Learning (FL) environment.
+
+[![CI](https://github.com/microsoft/fl-simulation/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/fl-simulation/actions/workflows/ci.yml)
 
 Currently implemented algorithms:
 
@@ -12,7 +14,7 @@ In addition, we implement the Branching Algorithm, our solution, which allows tr
 
 The framework allows adding and using custom algorithms besides the ones named.
 
-The simulation can be ran with device dropouts and client incentivization.
+The simulation can run with device dropouts and client incentivization/rewards.
 
 ## Examples
 
