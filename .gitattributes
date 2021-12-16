@@ -1,0 +1,35 @@
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+.pep8 text eol=lf
+
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Scripts
+*.bash     text eol=lf
+*.fish     text eol=lf
+*.sh       text eol=lf
+# These are explicitly windows files and should use crlf
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+
+# Graphics
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.tif      binary
+*.tiff     binary
+*.ico      binary
+*.svg      binary
+*.eps      binary

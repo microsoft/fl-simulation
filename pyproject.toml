@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "fl-simuation"
+version = "0.1.0"
+description = "A flexible framework for running experiments with PyTorch models in a simulated Federated Learning (FL) environment."
+authors = [
+    "Justin Harris <https://github.com/juharris>",
+    "Grigory Dorodnov <https://github.com/nevenoomo>",
+]
+license = "MIT"
+readme = 'README.md'
+packages = [{ include = "fl_simulation", from = "src" }]
+include = ["LICENSE.txt"]
+
+[tool.poetry.dependencies]
+python = ">=3.7.1,<4.0"
+numpy = "^1.20"
+torch = "^1.9"
+torchtext = "^0.10.0"
+tensorboard = "^2.5.0"
+typing-extensions = "^3.10.0"
+
+[tool.poetry.dev-dependencies]
+scikit-learn = "^0.24.2"
+torchvision = "^0.10"
+pandas = "^1.3"
+matplotlib = "^3.4.2"
+yapf = "^0.31.0"
+pydocstyle = "^6.1.1"
+toml = "^0.10.2"
+bandit = "^1.7.0"
+ipykernel = "^6.2.0"
+pytest = "^6.2.5"
+click = "^8.0.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.yapf]
+based_on_style = "facebook"
+allow_multiline_dictionary_keys = true
+allow_split_before_default_or_named_assigns = true
+allow_split_before_dict_value = true
+blank_line_before_nested_class_or_def = true
+column_limit = 119
+continuation_indent_width = 8
+spaces_around_power_operator = true
+split_arguments_when_comma_terminated = true
+split_complex_comprehension = true
+split_penalty_after_opening_bracket = 0
+split_penalty_before_if_expr = 30
+split_penalty_comprehension = 10
+use_tabs = false
+
+[tool.pytest.ini_options]
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]

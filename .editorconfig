@@ -1,0 +1,45 @@
+[.editorconfig]
+ij_editorconfig_align_group_field_declarations = false
+ij_editorconfig_space_after_colon = false
+ij_editorconfig_space_after_comma = true
+ij_editorconfig_space_before_colon = false
+ij_editorconfig_space_before_comma = false
+ij_editorconfig_spaces_around_assignment_operators = true
+
+[{*.bash,*.sh,*.zsh}]
+indent_size = 4
+tab_width = 4
+
+[{*.markdown,*.md}]
+ij_markdown_force_one_space_after_blockquote_symbol = true
+ij_markdown_force_one_space_after_header_symbol = true
+ij_markdown_force_one_space_after_list_bullet = true
+ij_markdown_force_one_space_between_words = true
+ij_markdown_keep_indents_on_empty_lines = false
+
+[{*.py,*.pyw}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+max_line_length = 120
+indent_size = 4
+tab_width = 4
+ij_continuation_indent_size = 8
+ij_formatter_off_tag = @formatter:off
+ij_formatter_on_tag = @formatter:on
+ij_formatter_tags_enabled = false
+ij_python_align_collections_and_comprehensions = true
+ij_python_align_multiline_imports = true
+ij_python_align_multiline_parameters = true
+ij_python_align_multiline_parameters_in_calls = true
+ij_python_blank_line_at_file_end = true
+ij_python_blank_lines_after_imports = 1
+ij_python_spaces_around_power_operator = true
+ij_python_use_continuation_indent_for_arguments = true
+ij_python_use_continuation_indent_for_collection_and_comprehensions = false
+ij_python_use_continuation_indent_for_parameters = true
+ij_python_wrap_long_lines = false
+ij_smart_tabs = true
+
+[{*.yaml,*.yml}]
+indent_size = 2
