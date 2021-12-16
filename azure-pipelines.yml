@@ -7,7 +7,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-
 - task: ComponentGovernanceComponentDetection@0
   inputs:
     scanType: 'Register'
@@ -16,3 +15,6 @@ steps:
 
 - task: CredScan@3
   inputs:
+    outputFormat: sarif
+    debugMode: false
+
