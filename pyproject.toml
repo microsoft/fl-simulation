@@ -12,13 +12,14 @@ packages = [{ include = "fl_simulation", from = "src" }]
 include = ["LICENSE.txt"]
 
 [tool.poetry.dependencies]
-python = ">=3.7.1,<4.0"
 numpy = "^1.20"
+python = ">=3.7.1,<4.0"
+# Use a specific version of setuptools because of a bug in PyTorch https://stackoverflow.com/a/70520199/1226799. It should be resolved already but PyTorch hasn't updated yet.
+setuptools = "59.5.0"
+tensorboard = "^2.5.0"
 torch = "^1.9"
 torchtext = "^0.10.0"
-tensorboard = "^2.5.0"
 typing-extensions = "^3.10.0"
-setuptools = "59.5.0"
 
 [tool.poetry.dev-dependencies]
 scikit-learn = "^0.24.2"
