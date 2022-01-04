@@ -6,15 +6,18 @@ A flexible framework for running experiments with PyTorch models in a simulated 
 
 Currently implemented algorithms:
 
-* Federated Averaging (FedAvg): *McMahan, B., Moore, E., Ramage, D., Hampson, S., & Arcas, B. A. (2017). Communication-efficient learning of deep networks from decentralized data. Artificial Intelligence and Statistics, (pp. 1273–1282).*
-* FedProx: *Li, T., Sahu, A. K., Zaheer, M., Sanjabi, M., Talwalkar, A., & Smith, V. (2018, 12). Federated Optimization in Heterogeneous Networks.*
-* Stochastic Controlled Averaging for Federated Learning (SCAFFOLD): *Karimireddy, S. P., Kale, S., Mohri, M., Reddi, S. J., Stich, S. U., & Suresh, A. T. (2019, October). SCAFFOLD: Stochastic Controlled Averaging for Federated Learning.*
+* Federated Averaging (**FedAvg**): *McMahan, B., Moore, E., Ramage, D., Hampson, S., & Arcas, B. A. (2017). Communication-efficient learning of deep networks from decentralized data. Artificial Intelligence and Statistics, (pp. 1273–1282).*
+* **FedProx**: *Li, T., Sahu, A. K., Zaheer, M., Sanjabi, M., Talwalkar, A., & Smith, V. (2018, 12). Federated Optimization in Heterogeneous Networks.*
+* Stochastic Controlled Averaging for Federated Learning (**SCAFFOLD**): *Karimireddy, S. P., Kale, S., Mohri, M., Reddi, S. J., Stich, S. U., & Suresh, A. T. (2019, October). SCAFFOLD: Stochastic Controlled Averaging for Federated Learning.*
 
-In addition, we implement the Branching Algorithm, our solution, which allows training models using FL in presence of high data heterogeneity or malicious activity by combining BFT with users clusterization in FL. When any of the named disruptions is detected, a new model is being spawned to contain that disruptive activity.
+In addition, we implement the **Branching Algorithm**, our solution, which allows training models using FL in presence of high data heterogeneity or malicious activity by combining BFT with users clusterization in FL. When any of the named disruptions is detected, a new model is spawned to contain that disruptive activity.
+
+![A model can branch into several other models if malicious or distinct data is seen.](./pictures/branching.png)
+_An example of how a model can branch into several models. Green circles represent normal model updates, red squares represent abnormal model updates. Each of the abnormal updates is either being applied to one of the existing models (except for the sanitized) or spawns a new model._
 
 The framework allows adding and using custom algorithms besides the ones named.
 
-The simulation can run with device dropouts and client incentivization/rewards.
+The simulation can run with device dropouts and client incentivization/rewards to track how useful a particular user's data was to the training process.
 
 ## Examples
 
@@ -146,7 +149,7 @@ for r in range(num_rounds):
 ```
 
 Running the `test_fedavg` test, for example, produces the following results:
-![](./pictures/tensorboard_results.png)
+![Tensorboard results showing accuracy improving and loss decreasing.](./pictures/tensorboard_results.png)
 
 # Installation
 1. Set up and activate a Python environment for Python `>=3.7.1` (recommended: Conda or pyenv).
