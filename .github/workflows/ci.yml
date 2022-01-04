@@ -33,6 +33,9 @@ jobs:
       run: |
         poetry install
 
+        # Use a specific version of setuptools because of a bug in PyTorch https://stackoverflow.com/a/70520199/1226799. It should be resolved already but PyTorch hasn't updated yet.
+        poetry run pip install setuptools=='59.5.0'
+
     - name: Lint
       run: |
         poetry run yapf --diff --parallel --recursive .
