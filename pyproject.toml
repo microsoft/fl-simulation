@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fl-simuation"
+name = "fl-simulation"
 version = "0.1.0"
 description = "A flexible framework for running experiments with PyTorch models in a simulated Federated Learning (FL) environment."
 authors = [
@@ -12,11 +12,11 @@ packages = [{ include = "fl_simulation", from = "src" }]
 include = ["LICENSE.txt"]
 
 [tool.poetry.dependencies]
-python = ">=3.7.1,<4.0"
 numpy = "^1.20"
+python = ">=3.7.1,<4.0"
+tensorboard = "^2.5.0"
 torch = "^1.9"
 torchtext = "^0.10.0"
-tensorboard = "^2.5.0"
 typing-extensions = "^3.10.0"
 
 [tool.poetry.dev-dependencies]
