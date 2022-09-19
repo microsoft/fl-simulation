@@ -151,7 +151,7 @@ class UserEncoder(nn.Module):
         return user_repr
 
 
-class NRMS(nn.Module):
+class Nrms(nn.Module):
     """News Recommendation with Multi-Head Self-Attention.
     
     The final model used for predicting users' clicks/non-clicks on the candidate articles based on the their histories.
@@ -179,7 +179,7 @@ class NRMS(nn.Module):
             dropout (float, optional): the dropout rate. Defaults to 0.0.
             batch_first (bool, optional): whether the first dimension (dim=0) should be treated as the batch size, instead of the second one (dim=1). Defaults to True.
         """
-        super(NRMS, self).__init__()
+        super(Nrms, self).__init__()
         self.news_encoder = NewsEncoder(emb_size, num_heads, enc_size, hidden_dim)
         self.user_encoder = UserEncoder(
                 enc_size, num_heads, hidden_dim, self.news_encoder, batch_first=batch_first, dropout=dropout
@@ -213,7 +213,7 @@ class NRMS(nn.Module):
         return torch.sigmoid(logits)
 
 
-class NRMSWithEmbeddings(nn.Module):
+class NrmsWithEmbeddings(nn.Module):
     """News Recommendation with Multi-Head Self-Attention with the Embeddings module.
     
     The final model used for predicting users' clicks/non-clicks on the candidate articles based on the their histories.
@@ -241,9 +241,10 @@ class NRMSWithEmbeddings(nn.Module):
             emb (nn.Embeddings): the embedding module to be used. 
             batch_first (bool, optional): whether the first dimension (dim=0) should be treated as the batch size, instead of the second one (dim=1). Defaults to True.
         """
-        super(NRMSWithEmbeddings, self).__init__()
+        super(NrmsWithEmbeddings, self).__init__()
         self.emb = emb
-        self.nrms = NRMS(
+        # TODO Infer emb_size from `emb`.
+        self.nrms = Nrms(
                 emb_size=emb_size,
                 num_heads=num_heads,
                 enc_size=enc_size,
