@@ -158,6 +158,13 @@ Running the `test_fedavg` test, for example, produces the following results:
 poetry install
 ```
 
+If you have issues running code or tests, then use a specific version of setuptools because of a bug in PyTorch https://stackoverflow.com/a/70520199/1226799.
+It should be resolved already but PyTorch hasn't updated yet.
+Run:
+```bash
+poetry run pip install setuptools=='59.5.0'
+```
+
 # Testing
 To run all of the tests, use command:
 ```bash
@@ -166,7 +173,7 @@ pytest
 
 To skip slow computation intensive tests run:
 ```bash
-pytest -m "not slow"
+pytest -m 'not slow'
 ```
 
 # Linting
