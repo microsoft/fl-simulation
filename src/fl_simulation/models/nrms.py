@@ -9,7 +9,12 @@ import torch.nn as nn
 class AdditiveAttention(nn.Module):
     """Additive attention module."""
 
-    def __init__(self, in_dim: int, hidden_dim: int, is_export_enabled=False) -> None:
+    def __init__(
+        self,
+        in_dim: int,
+        hidden_dim: int,
+        is_export_enabled=False,
+    ) -> None:
         """Create a new Additive Attention module.
 
         Args:
@@ -61,6 +66,7 @@ class NewsEncoder(nn.Module):
             num_heads: int,
             enc_size: int,
             hidden_dim: int,
+            is_export_enabled=False,
     ) -> None:
         """Create a new `NewsEncoder` instance.
 
@@ -69,12 +75,13 @@ class NewsEncoder(nn.Module):
             num_heads (int): number of heads in the internal multi-head attention.
             enc_size (int): the size of the finally produced encoding.
             hidden_dim (int): the hidden dimension of the internal additive attnetion module.
+            is_export_enabled (bool, optional): Indicates if some operations should be modified to use ones that are compatible with ONNX Runtime. Defaults to False.
         """
         super(NewsEncoder, self).__init__()
 
         self.self_att = nn.MultiheadAttention(emb_size, num_heads=num_heads, batch_first=True)  # , dropout=0.1)
         self.proj = nn.Linear(emb_size, enc_size)
-        self.additive_attn = AdditiveAttention(enc_size, hidden_dim)
+        self.additive_attn = AdditiveAttention(enc_size, hidden_dim, is_export_enabled=is_export_enabled)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Compute the representation for the news articles in `x`.
@@ -110,6 +117,7 @@ class UserEncoder(nn.Module):
             news_encoder: NewsEncoder,
             dropout: float = 0.0,
             batch_first: bool = True,
+            is_export_enabled=False,
     ) -> None:
         """Create a new `UserEncoder` instance.
 
@@ -120,13 +128,14 @@ class UserEncoder(nn.Module):
             news_encoder (NewsEncoder): the news encoder used for encoding the articles in the user's history.
             dropout (float, optional): the dropout rate. Defaults to 0.0.
             batch_first (bool, optional): whether the first dimension (dim=0) should be treated as the batch size, instead of the second one (dim=1). Defaults to True.
+            is_export_enabled (bool, optional): Indicates if some operations should be modified to use ones that are compatible with ONNX Runtime. Defaults to False.
         """
         super().__init__()
 
         self.news_encoder = news_encoder
         self.self_att = nn.MultiheadAttention(enc_size, num_heads, batch_first=batch_first, dropout=dropout)
         self.proj = nn.Linear(enc_size, enc_size)
-        self.additive_attn = AdditiveAttention(enc_size, additive_att_hidden_dim)
+        self.additive_attn = AdditiveAttention(enc_size, additive_att_hidden_dim, is_export_enabled=is_export_enabled)
 
     def forward(self, history: torch.Tensor, hist_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Forward step.
@@ -178,6 +187,7 @@ class Nrms(nn.Module):
             hidden_dim: int,
             dropout: float = 0.0,
             batch_first: bool = True,
+            is_export_enabled=False,
     ) -> None:
         """Create the News Recommendation with Multi-Head Self-Attention model.
 
@@ -188,11 +198,12 @@ class Nrms(nn.Module):
             hidden_dim (int): the hidden dimension for the underlying multi-head attention module. 
             dropout (float, optional): the dropout rate. Defaults to 0.0.
             batch_first (bool, optional): whether the first dimension (dim=0) should be treated as the batch size, instead of the second one (dim=1). Defaults to True.
+            is_export_enabled (bool, optional): Indicates if some operations should be modified to use ones that are compatible with ONNX Runtime. Defaults to False.
         """
         super(Nrms, self).__init__()
-        self.news_encoder = NewsEncoder(emb_size, num_heads, enc_size, hidden_dim)
+        self.news_encoder = NewsEncoder(emb_size, num_heads, enc_size, hidden_dim, is_export_enabled=is_export_enabled)
         self.user_encoder = UserEncoder(
-                enc_size, num_heads, hidden_dim, self.news_encoder, batch_first=batch_first, dropout=dropout
+                enc_size, num_heads, hidden_dim, self.news_encoder, batch_first=batch_first, dropout=dropout, is_export_enabled=is_export_enabled,
         )
 
     def forward(
@@ -240,6 +251,7 @@ class NrmsWithEmbeddings(nn.Module):
             hidden_dim: int,
             emb: nn.Embedding,
             batch_first: bool = True,
+            is_export_enabled=False,
     ) -> None:
         """Create the News Recommendation with Multi-Head Self-Attention model.
 
@@ -250,6 +262,7 @@ class NrmsWithEmbeddings(nn.Module):
             hidden_dim (int): the hidden dimension for the underlying multi-head attention module.
             emb (nn.Embeddings): the embedding module to be used. 
             batch_first (bool, optional): whether the first dimension (dim=0) should be treated as the batch size, instead of the second one (dim=1). Defaults to True.
+            is_export_enabled (bool, optional): Indicates if some operations should be modified to use ones that are compatible with ONNX Runtime. Defaults to False.
         """
         super(NrmsWithEmbeddings, self).__init__()
         self.emb = emb
@@ -259,7 +272,8 @@ class NrmsWithEmbeddings(nn.Module):
                 num_heads=num_heads,
                 enc_size=enc_size,
                 hidden_dim=hidden_dim,
-                batch_first=batch_first
+                batch_first=batch_first,
+                is_export_enabled=is_export_enabled,
         )
 
     def forward(
