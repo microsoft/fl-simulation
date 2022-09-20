@@ -1,5 +1,6 @@
 """The News Recommendation with Multi-Head Attention model."""
 from typing import Optional, Tuple
+from fl_simulation.utils.softmax import custom_softmax
 
 import torch
 import torch.nn as nn
@@ -8,17 +9,19 @@ import torch.nn as nn
 class AdditiveAttention(nn.Module):
     """Additive attention module."""
 
-    def __init__(self, in_dim: int, hidden_dim: int) -> None:
+    def __init__(self, in_dim: int, hidden_dim: int, is_export_enabled=False) -> None:
         """Create a new Additive Attention module.
 
         Args:
             in_dim (int): input dimension.
             hidden_dim (int): hiddent dimension.
+            is_export_enabled (bool, optional): Indicates if some operations should be modified to use ones that are compatible with ONNX Runtime. Defaults to False.
         """
         super().__init__()
 
         self.in_dim = in_dim
         self.hidden_dim = hidden_dim
+        self.is_export_enabled = is_export_enabled
         self.proj = nn.Linear(self.in_dim, self.hidden_dim)
         self.act = nn.Tanh()
         self.proj_v = nn.Linear(self.hidden_dim, 1, bias=False)
@@ -36,8 +39,15 @@ class AdditiveAttention(nn.Module):
         weights = self.proj_v(self.act(self.proj(context))).squeeze(-1)  # [B, seq_len]
         # mask the elements which should not contribute to the final result
         if mask is not None:
-            weights.masked_fill_(mask, float("-inf"))
-        weights = torch.softmax(weights, dim=-1)  # [B, seq_len]
+            if self.is_export_enabled:
+                weights *= (mask * -1e8 + 1)
+            else:
+                weights.masked_fill_(mask, float("-inf"))
+
+        if self.is_export_enabled:
+            weights = custom_softmax(weights, dim=-1) # [B, seq_len]
+        else:
+            weights = torch.softmax(weights, dim=-1)  # [B, seq_len]
         # [B, 1, seq_len] * [B, seq_len, in_dim] -> [B, 1, in_dim]
         return torch.bmm(weights.unsqueeze(1), context).squeeze(1), weights  # [B, in_dim], [B, seq_len]
 
