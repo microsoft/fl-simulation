@@ -1,6 +1,7 @@
 """Utilities for working with the net and web."""
 
 import os
+import sys
 from typing import Callable, Optional, Union
 from urllib import request
 
@@ -49,15 +50,16 @@ def download_url(
                 destination_filename,
                 end="",
         )
+        sys.stdout.flush()
 
     request.urlretrieve(url, destination_filename, progress_updater)
 
     if not os.path.isfile(destination_filename):
         raise ConnectionError("file was could not be downloaded")
 
-    nBytes = os.path.getsize(destination_filename)
+    num_bytes = os.path.getsize(destination_filename)
 
     if verbose:
-        print("...done,", nBytes, "bytes.")
+        print("...done,", num_bytes, "bytes.")
 
-    return nBytes
+    return num_bytes
